@@ -1,5 +1,5 @@
 const puppeteer = require('puppeteer-core');
-
+const url = `https://eticket.railway.gov.bd/booking/train/search?fromcity=Dhaka&tocity=Chattogram&doj=20-Feb-2023&class=SNIGDHA` ;
 (async () => {
 
   const browser = await puppeteer.launch({
@@ -8,8 +8,6 @@ const puppeteer = require('puppeteer-core');
     });
 const page = await browser.newPage();
 await page.goto('https://eticket.railway.gov.bd/login/en')
-//   await page.goto('https://eticket.railway.gov.bd/booking/train/search?fromcity=Dhaka&tocity=Chittagong&doj=18-Apr-2022&class=AC_S');
-//   await page.screenshot({ path: 'example.png' });
 await page.type('#mobile_number' , '01829975343')
 await page.type('#password','chandanpura');
 await page.click('.login-form-submit-btn');
@@ -17,7 +15,7 @@ await page.click('.login-form-submit-btn');
 await page.waitForSelector(".nid-verfication-flow-skip-btn")
 //await page.waitForTimeout(3000);
 
-await page.goto('https://eticket.railway.gov.bd/booking/train/search?fromcity=Dhaka&tocity=Chattogram&doj=19-Feb-2023&class=SNIGDHA');
+await page.goto(url)
 await page.waitForSelector('.book-now-btn');
 
 var bookbtn = await page.$$('.book-now-btn');
@@ -25,19 +23,15 @@ var bookbtn = await page.$$('.book-now-btn');
 console.log('total',bookbtn.length);
 for(var i = 0 ; i< bookbtn.length ; i++){
     var page2 =  await browser.newPage();
-    await page2.goto('https://eticket.railway.gov.bd/booking/train/search?fromcity=Dhaka&tocity=Chattogram&doj=19-Feb-2023&class=SNIGDHA');
-    await page2.evaluate(()=>{
-      maxTickets = 100000000;
-      console.log(maxTickets);
-     // document.querySelectorAll('.trip-collapsible.trip-div[style*="display: none"]')[0].style.display = 'block'
-     // document.querySelectorAll('div[style*="display: none"]')[1].style.display='' ;
-  })
+    await page2.goto(url);
   await page2.waitForSelector('.seat-class-and-fare');
   await page2.evaluate(()=>{
     //this is to solve the chattala express minimize issue which is not yet solved
-    document.querySelectorAll('.trip-collapsible.trip-div[style*="display: none"]').forEach(pes =>{
+    document.querySelectorAll('.trip-collapsible.trip-div').forEach(pes =>{
       pes.style.display = 'block'
-    })
+    });
+    maxTickets = 100000000;
+    console.log(maxTickets);
   })
     await page2.waitForSelector('.book-now-btn');
     var btn = await page2.$$('.book-now-btn');
