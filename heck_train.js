@@ -19,7 +19,7 @@ var dates = [25];
 
 (async () => {
   const browser = await puppeteer.launch({
-    executablePath: "/usr/bin/brave-browser",
+     executablePath: "/usr/bin/chromium",
   //  executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe' ,
     headless: false,
   });
@@ -32,7 +32,7 @@ var dates = [25];
   await page.waitForSelector(".railway-ticket-search-submit-btn");
 
   for (var route of routes) {
-    const url = `https://eticket.railway.gov.bd/booking/train/search?fromcity=${route[0]}&tocity=${route[1]}&doj=25-Apr-2023&class=SNIGDHA`;
+    const url = `https://eticket.railway.gov.bd/booking/train/search?fromcity=${route[0]}&tocity=${route[1]}&doj=13-Jul-2023&class=SNIGDHA`;
     //await page.waitForTimeout(3000);
 
     await page.goto(url);
@@ -61,8 +61,9 @@ var dates = [25];
       var btn = await page2.$$(".book-now-btn");
       var seat_availableDiv =  await page2.$$('.seat-availability-box')
       console.log("btn", btn.length);
-      var button = await seat_availableDiv[1].$('.book-now-btn');
-      button.click();
+      //var button = await seat_availableDiv[1].$('.book-now-btn');
+       var button = await page2.$('.book-now-btn');
+       button.click();
       //await page2.$$('.seat-availability-box')[1].querySelector('.book-now-btn').click()
       //btn[9].click();
       try{
@@ -70,8 +71,8 @@ var dates = [25];
       }catch(error){
         if (error.name === 'TimeoutError') {
         //  btn[i].click();
-        var button = await seat_availableDiv[1].$('.book-now-btn');
-        button.click();        
+        var button = await page2.$('.book-now-btn');
+         button.click()        
         await page2.waitForSelector("#tickets_total");
         };
       }
@@ -90,7 +91,7 @@ var dates = [25];
     console.log('one route is done')
   }
   console.log("done with one heck");
-  await browser.close();
+  //await browser.close();
   //};
 })();
 
